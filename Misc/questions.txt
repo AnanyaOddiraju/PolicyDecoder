@@ -1,0 +1,4 @@
+why is chunk_id is int why not string in add_chubk of vector_Store
+def add_chunk(self, chunk_id: int, vector: list[float], metadata: dict):
+        point = PointStruct(id=chunk_id, vector=vector, payload=metadata)
+        self.client.upsert(collection_name=self.collection_name, points=[point])

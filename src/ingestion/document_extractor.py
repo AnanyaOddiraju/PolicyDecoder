@@ -7,6 +7,7 @@ def _common_metadata(path: Path) -> dict:
     #Common metadata for every extracted document
     return {
         "source": path.name,
+        "source_path": str(path),
         "document_id": path.stem,
     }
 
@@ -19,7 +20,7 @@ def extract_txt(file_path: str | Path) -> list[dict]:
     if not text.strip():
         return []
     
-    metadata = _common_metadata(Path)  
+    metadata = _common_metadata(path)  
     return [
         {
             **metadata,
@@ -104,7 +105,7 @@ def extract_pdf(file_path: str | Path) -> list[dict]:
                 {
                   **metadata,
                   "type": "table",
-                  "table": table,
+                  "table": cleaned_table,
                   "page": page_number,
                   "table_index": table_index,
                 }

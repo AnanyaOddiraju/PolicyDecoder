@@ -17,3 +17,4 @@ pytest
 pymupdf
 pdfplumber
 google-genai
+tiktoken

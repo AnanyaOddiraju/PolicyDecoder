@@ -1,6 +1,6 @@
 from pathlib import Path
-from src.ingestion.loader import load_document
-from src.chunking.text_chunker import chunk_document
+from src.ingestion.loader import load_documents
+from src.chunking.item_chunker import chunk_item
 from src.retrieval.vector_store import VectorStore
 from src.embeddings.text_embedder import TextEmbedder
 
@@ -9,19 +9,18 @@ class IngestionPipeline:
             self.embedder = TextEmbedder()
             self.store = VectorStore()
     def ingest(self,file_path: Path):
-        documents = load_document(file_path)
-        print("Document length:", len(documents[0]["text"]))
+        extracted_items = load_documents(file_path)
         all_chunks = []
         
-        for document in documents:
-            chunks= chunk_document(
-                document,
+        for item in extracted_items:
+            chunks= chunk_item(
+                item,
                 chunk_size=1000,
                 chunk_overlap=150,
-            )
+                )
+            all_chunks.extend(chunks)
         
-        all_chunks.extend(chunks)
-        for i, chunk in enumerate(chunks, start=1):
+        for i, chunk in enumerate(all_chunks, start=1):
             print(f"Chunk {i}:\n{chunk}\n")
 
         # Embed the chunks
